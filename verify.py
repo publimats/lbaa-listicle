@@ -52,7 +52,13 @@ parser.feed(HTML)
 assert parser.reason_sections == 5, f"Expected 5 reasons, found {parser.reason_sections}"
 assert len(parser.reason_headlines) == 5, "Every reason needs one H2"
 assert len(parser.ids) == len(set(parser.ids)), "Duplicate HTML id"
-assert len(parser.shop_links) >= 3, "Expected repeated conversion links"
+assert len(parser.shop_links) == 4, "Expected CTA links after reasons 3, 4, 5 and in the final offer"
+assert {link.get("data-cta-position") for link in parser.shop_links} == {
+    "after_reason_3",
+    "after_reason_4",
+    "after_reason_5",
+    "final_offer",
+}, "CTA cadence no longer matches the reference article"
 
 for link in parser.shop_links:
     assert link.get("data-cta-position"), "Every shop link needs a CTA position"
@@ -70,11 +76,13 @@ for required in ["styles.css", "script.js", "assets/logo.png", "assets/pack-trio
     assert (ROOT / required).is_file(), f"Missing required file: {required}"
 
 lower = HTML.lower()
+assert "quick-read" not in lower and "les 5 points à retenir" not in lower, "The article must not front-load a summary"
+assert "class=\"hero\"" not in lower and "site-header" not in lower, "The listicle must open as an article, not a landing-page hero"
 for forbidden in ["zéro fuite", "antibactérien", "hypoallergénique", "stock limité", "compte à rebours"]:
     assert forbidden not in lower, f"Risky or unsupported claim present: {forbidden}"
 assert "—" not in HTML, "Use a normal hyphen instead of an em dash"
 
 print("PASS: static listicle audit")
 print("HEADLINES ONLY:")
-for index, headline in enumerate(parser.reason_headlines, 1):
-    print(f"{index}. {headline}")
+for headline in parser.reason_headlines:
+    print(headline)

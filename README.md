@@ -4,9 +4,10 @@ Landing page statique pour La Bande à Anna, conçue comme pré-vente avant le P
 
 ## Structure
 
-- Hero et résumé lisible en diagonale
-- 5 raisons avec headlines autonomes
-- CTA vers le Pack Trio
+- Ouverture éditoriale : titre et signature, sans hero commercial ni résumé
+- 5 raisons en grille image/article avec headlines autonomes
+- Premiers CTA après la raison 3, puis après les raisons 4 et 5
+- Offre finale inspirée du rythme de l’article de référence
 - Transmission automatique des paramètres de campagne vers la page produit
 - Responsive, accessible et visible sans JavaScript
 
